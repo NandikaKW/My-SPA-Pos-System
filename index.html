@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My-SPA-Pos-System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/OrderStyle.css">
+  <link rel="stylesheet" href="assets/css/normalize_css.css">
+  <link rel="stylesheet" href="assets/css/orderDetailsStyles.css">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+
+</head>
+<body>
+<!--Navbar Start-->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">PosSystem</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="#Home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#Customer">Customer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#Item">Item</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#Order">Order</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#OrderDetail">OrderDetail</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search...">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+<!--Navbar End-->
+
+<!--Main Section Start-->
+<main id="Home" class="page">
+<section id="main-section">
+  <!-- Status of customers,items & Orders-->
+  <div class="grid-container">
+    <div class="card w-75 mb-3">
+      <div class="card-body assets-count-div">
+        <h5 class="card-title">Total Customers</h5><br>
+        <span class="card-emojis" id="total-customers">___</span>&nbsp;&nbsp;
+        <i class="fas fa-user-friends card-icon"></i>
+      </div>
+    </div>
+    <div class="card w-75 mb-3">
+      <div class="card-body assets-count-div">
+        <h5 class="card-title">Total Items</h5><br>
+        <span class="card-emojis" id="total-items">___</span>&nbsp;&nbsp;
+        <i class="fas fa-box-open card-icon"></i>
+      </div>
+    </div>
+    <div class="card w-75 mb-3">
+      <div class="card-body assets-count-div">
+        <h5 class="card-title">Total Orders</h5><br>
+        <span class="card-emojis" id="total-orders">___</span>&nbsp;&nbsp;
+        <i class="fas fa-shopping-bag card-icon"></i>
+      </div>
+    </div>
+    <div style="background-color: transparent">
+      <h3><i class="fas fa-chart-line"></i> We're improving..</h3>
+    </div>
+  </div><br>
+</section>
+
+<!--Charts-->
+<section id="charts-section" class="mt-4">
+  <div class="row">
+    <div class="col-xl-6">
+      <div class="card mb-4 chart-card">
+        <div class="card-header bg-white border-bottom-0 d-flex justify-content-between align-items-center">
+          <div>
+            <i class="fas fa-chart-area me-1 text-primary"></i>
+            <span class="fw-bold">Sales Analytics</span>
+          </div>
+          <div class="chart-period-selector">
+            <button class="btn-period active" data-period="week">Week</button>
+            <button class="btn-period" data-period="month">Month</button>
+            <button class="btn-period" data-period="year">Year</button>
+          </div>
+        </div>
+        <div class="card-body p-3 position-relative">
+          <div class="chart-loader">
+            <div class="loader-spinner"></div>
+          </div>
+          <canvas id="salesAreaChart" width="100%" height="300"></canvas>
+          <div class="chart-tooltip"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6">
+      <div class="card mb-4 chart-card">
+        <div class="card-header bg-white border-bottom-0 d-flex justify-content-between align-items-center">
+          <div>
+            <i class="fas fa-chart-bar me-1 text-primary"></i>
+            <span class="fw-bold">Top Selling Products</span>
+          </div>
+          <div class="chart-category-filter">
+            <select class="form-select form-select-sm">
+              <option>All Categories</option>
+              <option>Electronics</option>
+              <option>Groceries</option>
+              <option>Clothing</option>
+            </select>
+          </div>
+        </div>
+        <div class="card-body p-3 position-relative">
+          <div class="chart-loader">
+            <div class="loader-spinner"></div>
+          </div>
+          <canvas id="productsBarChart" width="100%" height="300"></canvas>
+          <div class="chart-tooltip"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Charts js part -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-crosshair"></script>
+<script>
+  // Simulate loading delay
+  setTimeout(() => {
+    renderCharts();
+    document.querySelectorAll('.chart-loader').forEach(loader => {
+      loader.style.opacity = '0';
+      setTimeout(() => loader.style.display = 'none', 500);
+    });
+    document.querySelectorAll('.chart-card').forEach(card => {
+      card.classList.add('chart-loaded');
+    });
+  }, 1500);
+
+  function renderCharts() {
+    const salesCtx = document.getElementById('salesAreaChart').getContext('2d');
+    const salesAreaChart = new Chart(salesCtx, {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Daily Sales',
+          data: [1200, 1900, 1700, 2100, 2400, 2800, 2200],
+          backgroundColor: 'rgba(26, 115, 232, 0.1)',
+          borderColor: '#1a73e8',
+          borderWidth: 3,
+          tension: 0.4,
+          fill: true,
+          pointBackgroundColor: '#fff',
+          pointBorderColor: '#1a73e8',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointHoverBackgroundColor: '#1a73e8',
+          pointHoverBorderColor: '#fff',
+          pointHoverBorderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: {
+          duration: 2000,
+          easing: 'easeOutQuart',
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: false,
+            external: function(context) {
+              const tooltip = document.querySelector('#salesAreaChart').parentNode.querySelector('.chart-tooltip');
+              if (context.tooltip.opacity === 0) {
+                tooltip.style.opacity = '0';
+                return;
+              }
+
+              const value = context.tooltip.dataPoints[0].raw;
+              tooltip.innerHTML = `$${value.toLocaleString()}`;
+              tooltip.style.opacity = '1';
+              tooltip.style.left = context.tooltip.caretX + 'px';
+              tooltip.style.top = (context.tooltip.caretY - 10) + 'px';
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)',
+              drawBorder: false
+            },
+            ticks: {
+              color: '#6b7280',
+              callback: function(value) {
+                return '$' + value.toLocaleString();
+              }
+            }
+          },
+          x: {
+            grid: {
+              display: false,
+              drawBorder: false
+            },
+            ticks: {
+              color: '#6b7280'
+            }
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        },
+        elements: {
+          line: {
+            cubicInterpolationMode: 'monotone'
+          }
+        }
+      }
+    });
+
+    const productsCtx = document.getElementById('productsBarChart').getContext('2d');
+    const productsBarChart = new Chart(productsCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Smartphone', 'Laptop', 'Headphones', 'Tablet', 'Monitor', 'Keyboard'],
+        datasets: [{
+          label: 'Units Sold',
+          data: [45, 32, 28, 19, 15, 12],
+          backgroundColor: [
+            'rgba(26, 115, 232, 0.8)',
+            'rgba(31, 41, 55, 0.8)',
+            'rgba(26, 115, 232, 0.8)',
+            'rgba(31, 41, 55, 0.8)',
+            'rgba(26, 115, 232, 0.8)',
+            'rgba(31, 41, 55, 0.8)'
+          ],
+          borderColor: [
+            'rgba(26, 115, 232, 1)',
+            'rgba(31, 41, 55, 1)',
+            'rgba(26, 115, 232, 1)',
+            'rgba(31, 41, 55, 1)',
+            'rgba(26, 115, 232, 1)',
+            'rgba(31, 41, 55, 1)'
+          ],
+          borderWidth: 1,
+          borderRadius: 6,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: {
+          duration: 2000,
+          easing: 'easeOutBounce',
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: false,
+            external: function(context) {
+              const tooltip = document.querySelector('#productsBarChart').parentNode.querySelector('.chart-tooltip');
+              if (context.tooltip.opacity === 0) {
+                tooltip.style.opacity = '0';
+                return;
+              }
+
+              const value = context.tooltip.dataPoints[0].raw;
+              const label = context.tooltip.dataPoints[0].label;
+              tooltip.innerHTML = `${label}<br><strong>${value} units</strong>`;
+              tooltip.style.opacity = '1';
+              tooltip.style.left = context.tooltip.caretX + 'px';
+              tooltip.style.top = (context.tooltip.caretY - 10) + 'px';
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)',
+              drawBorder: false
+            },
+            ticks: {
+              color: '#6b7280',
+              stepSize: 10
+            }
+          },
+          x: {
+            grid: {
+              display: false,
+              drawBorder: false
+            },
+            ticks: {
+              color: '#6b7280'
+            }
+          }
+        },
+        interaction: {
+          intersect: true,
+          mode: 'point'
+        }
+      }
+    });
+
+    document.querySelectorAll('.btn-period').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.btn-period').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        document.querySelector('#salesAreaChart').parentNode.querySelector('.chart-loader').style.display = 'flex';
+        document.querySelector('#salesAreaChart').parentNode.querySelector('.chart-loader').style.opacity = '1';
+
+        setTimeout(() => {
+          const period = this.dataset.period;
+          let newData, newLabels;
+
+          if (period === 'week') {
+            newLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            newData = [1200, 1900, 1700, 2100, 2400, 2800, 2200];
+          } else if (period === 'month') {
+            newLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+            newData = [8500, 9200, 8800, 9700];
+          } else {
+            newLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            newData = [32000, 29000, 35000, 38000, 42000, 45000, 48000, 50000, 47000, 52000, 55000, 60000];
+          }
+
+          salesAreaChart.data.labels = newLabels;
+          salesAreaChart.data.datasets[0].data = newData;
+          salesAreaChart.update();
+
+          document.querySelector('#salesAreaChart').parentNode.querySelector('.chart-loader').style.opacity = '0';
+          setTimeout(() => {
+            document.querySelector('#salesAreaChart').parentNode.querySelector('.chart-loader').style.display = 'none';
+          }, 500);
+        }, 800);
+      });
+    });
+  }
+</script>
+</main>
+<!--Main Section End-->
+
+
+<!--Customer Management Start-->
+<main id="Customer" class="page" style="display: none;">
+<div class="container-fluid p-4">
+  <div class="row">
+    <!-- Customer Form -->
+    <div class="col-md-5 mb-4">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="card-title mb-0">Customer Management</h5>
+        </div>
+        <div class="card-body">
+          <form id="customerForm">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="customerId" class="form-label">Customer ID</label>
+                <input type="text" class="form-control" id="customerId" placeholder="Auto-generated" readonly>
+              </div>
+              <div class="col-md-6">
+                <label for="customerName" class="form-label">Customer Name*</label>
+                <input type="text" class="form-control" id="customerName" placeholder="John Doe" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="customerAddress" class="form-label">Address</label>
+              <textarea class="form-control" id="customerAddress" rows="2" placeholder="123 Main St, City"></textarea>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="customerContact" class="form-label">Contact Number</label>
+                <input type="tel" class="form-control" id="customerContact" placeholder="+94 77 123 4567">
+              </div>
+              <div class="col-md-6">
+                <label for="customerEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="customerEmail" placeholder="john@example.com">
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+              <button type="button" class="btn btn-success" id="btnSave">
+                <i class="fas fa-save me-1"></i> Save
+              </button>
+              <button type="button" class="btn btn-primary" id="btnUpdate" disabled>
+                <i class="fas fa-sync-alt me-1"></i> Update
+              </button>
+              <button type="button" class="btn btn-danger" id="btnDelete" disabled>
+                <i class="fas fa-trash-alt me-1"></i> Delete
+              </button>
+              <button type="reset" class="btn btn-warning" id="btnRefresh">
+                <i class="fas fa-redo me-1"></i> Refresh
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Table -->
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Customer List</h5>
+            <div class="input-group" style="width: 250px;">
+              <input type="text" class="form-control" placeholder="Search customers..." id="searchCustomer">
+              <button class="btn btn-light" type="button">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0" id="customerTable">
+              <thead class="table-primary">
+              <tr>
+                <th scope="col">Customer ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Email</th>
+                <th scope="col">Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              <!-- Additional rows will be dynamically added here -->
+              <tr>
+                <td>CS001</td>
+                <td>John Doe</td>
+                <td>123 Main St, City</td>
+                <td>+94 77 123 4567</td>
+                <td>john@example.com</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer bg-light">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="text-muted small">Showing 1 to 5 of 25 entries</div>
+            <nav aria-label="Page navigation">
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<!--Customer Management End-->
+
+
+<!--Item Management Start-->
+<main id="Item" class="page" style="display: none;">
+<div class="container-fluid p-4">
+  <div class="row">
+    <!-- Item Form -->
+    <div class="col-md-5 mb-4">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="card-title mb-0">Item Management</h5>
+        </div>
+        <div class="card-body">
+          <form id="itemForm">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="itemCode" class="form-label">Item Code*</label>
+                <input type="text" class="form-control" id="itemCode" placeholder="ITM001" required>
+              </div>
+              <div class="col-md-6">
+                <label for="itemName" class="form-label">Item Name*</label>
+                <input type="text" class="form-control" id="itemName" placeholder="Product Name" required>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="itemPrice" class="form-label">Price*</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input type="number" class="form-control" id="itemPrice" placeholder="0.00" step="0.01" min="0" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="itemQty" class="form-label">Quantity on Hand*</label>
+                <input type="number" class="form-control" id="itemQty" placeholder="0" min="0" required>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+              <button type="button" class="btn btn-success" id="btnItemSave">
+                <i class="fas fa-save me-1"></i> Save
+              </button>
+              <button type="button" class="btn btn-primary" id="btnItemUpdate" disabled>
+                <i class="fas fa-sync-alt me-1"></i> Update
+              </button>
+              <button type="button" class="btn btn-danger" id="btnItemDelete" disabled>
+                <i class="fas fa-trash-alt me-1"></i> Delete
+              </button>
+              <button type="reset" class="btn btn-warning" id="btnItemRefresh">
+                <i class="fas fa-redo me-1"></i> Refresh
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item Table -->
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Item List</h5>
+            <div class="input-group" style="width: 250px;">
+              <input type="text" class="form-control" placeholder="Search items..." id="searchItem">
+              <button class="btn btn-light" type="button">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0" id="itemTable">
+              <thead class="table-primary">
+              <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Qty on Hand</th>
+                <th scope="col">Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              <!-- Sample row  -->
+              <tr>
+                <td>ITM001</td>
+                <td>Sample Product</td>
+                <td>$19.99</td>
+                <td>50</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer bg-light">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="text-muted small">Showing 1 to 5 of 25 entries</div>
+            <nav aria-label="Page navigation">
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<!--Item Management End-->
+
+<!--Order Management Start-->
+<main id="Order" class="page" style="display: none;">
+  <section>
+    <div class="container mb-5">
+      <div class="row">
+        <div class="col-md-6 mt-3">
+          <div class="card" id="invoiceDetails">
+            <div class="card-header text-center gradient-text">
+              Invoice Details
+            </div>
+            <div class="mb-3 col-md-11 mt-3">
+              <label for="order_date" class="form-label">Order Date</label>
+              <input type="date" class="form-control" id="order_date" placeholder="Order Date Here" disabled>
+            </div>
+            <div class="mb-3 col-md-11">
+              <label for="order_id" class="form-label">Order Id</label>
+              <input type="text" class="form-control" id="order_id" placeholder="Order Id Here" disabled>
+            </div>
+            <div class="mb-3 col-md-11">
+              <label for="customer_id1" class="form-label">Customer Id</label>
+              <select class="form-select" aria-label="Disabled select example" id="customer_id1">
+                <option selected>Select Customer Id</option>
+              </select>
+            </div>
+            <div class="mb-3 col-md-11">
+              <label for="customer_name1" class="form-label">Customer Name</label>
+              <input type="text" class="form-control" id="customer_name1" placeholder="Customer Name Here" disabled>
+            </div>
+            <div class="mb-3 col-md-11">
+              <label for="total" class="form-label">Total</label>
+              <input type="number" class="form-control" id="total" placeholder="Total Here" disabled>
+            </div>
+            <div class="mb-3 col-md-11">
+              <label for="discount" class="form-label">Discount</label>
+              <input type="number" class="form-control" id="discount" placeholder="Discount in percentage Here">
+            </div>
+            <div class="mb-3 col-md-11">
+              <label for="sub_total" class="form-label">Sub Total</label>
+              <input type="number" class="form-control" id="sub_total" placeholder="Sub Total Here" disabled>
+            </div>
+            <div class="mb-3 col-md-11">
+              <label for="Cash" class="form-label">Cash</label>
+              <input type="number" class="form-control" id="Cash" placeholder="Cash Here">
+            </div>
+            <div class="mb-3 col-md-11">
+              <label for="balance" class="form-label">Balance</label>
+              <input type="number" class="form-control" id="balance" placeholder="Balance Here" disabled>
+            </div>
+            <div class="mt-1 mb-3" id="button">
+              <button id="submitBtn2" type="submit" class="btn btn-success">Purchase</button>
+              <button id="updateBtn2" type="button" class="btn btn-primary">Update</button>
+              <button id="deleteBtn2" type="button" class="btn btn-danger">Delete</button>
+              <button id="resetBtn2" type="reset" class="btn btn-warning">Reset</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mt-3">
+          <div class="card" id="orderDetails1">
+            <div class="card-header text-center gradient-text">
+              Order Details
+            </div>
+            <div class="m-3 col-md-11">
+              <label for="item_code1" class="form-label">Item Code</label>
+              <select class="form-select" aria-label="Disabled select example" id="item_code1">
+                <option selected>Select Item Code</option>
+              </select>
+            </div>
+            <div class="m-3 col-md-11">
+              <label for="item_name1" class="form-label">Item Name</label>
+              <input type="text" class="form-control" id="item_name1" placeholder="Item Name Here" disabled>
+            </div>
+            <div class="m-3 col-md-11">
+              <label for="price1" class="form-label">Price</label>
+              <input type="number" class="form-control" id="price1" placeholder="Price Here" disabled>
+            </div>
+            <div class="m-3 col-md-11">
+              <label for="qty_on_hand" class="form-label">Qty on Hand</label>
+              <input type="number" class="form-control" id="qty_on_hand" placeholder="Qty on hand Here" disabled>
+            </div>
+            <div class="m-3 col-md-11">
+              <label for="getQty" class="form-label">Getting Qty</label>
+              <input type="number" class="form-control" id="getQty" placeholder="Qty Here">
+            </div>
+            <div class="m-3" id="button1">
+              <button id="addBtn" type="submit" class="btn btn-success">Add</button>
+              <button id="UpdateBtn3" type="button" class="btn btn-primary">Update</button>
+              <button id="removeBtn" type="button" class="btn btn-danger">Remove</button>
+              <button id="resetItemDetailsBtn" type="reset" class="btn btn-warning">Reset</button>
+            </div>
+            <!--                        Order Table-->
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0" id="item-order-table">
+                  <thead class="table-primary">
+                  <tr>
+                    <th scope="col">Item Code</th>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Price Per Kg</th>
+                    <th scope="col">Qty on Hand</th>
+                    <th scope="col">Qty</th>
+
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <!-- Sample row  -->
+                  <tr>
+                    <td>ITM001</td>
+                    <td>Sample Product</td>
+                    <td>$19.99</td>
+                    <td>50</td>
+                    <td>10</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<!--Order Management End-->
+
+
+<!--order Detail Management Table Start-->
+<main id="OrderDetail" class="page" style="display: none;">
+<section class="OrderDetails">
+  <h1 class="topic ">Order Details</h1>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover mb-0" id="OrderDetailsTable">
+        <thead class="table-primary">
+        <tr>
+          <th scope="col">Order Id</th>
+          <th scope="col">Order Date</th>
+          <th scope="col">Customer Id</th>
+          <th scope="col">Total</th>
+          <th scope="col">Discount</th>
+          <th scope="col">Sub Total</th>
+          <th scope="col">Cash</th>
+          <th scope="col">Balance</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Sample row  -->
+        <tr>
+          <td>ORD001</td>
+          <td>2023-09-01</td>
+          <td>CS001</td>
+          <td>$19.99</td>
+          <td>5%</td>
+          <td>$14.99</td>
+          <td>$100.00</td>
+          <td>$85.00</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+</main>
+<!--Order Management End-->
+
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+<script src="JS/navHandler.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

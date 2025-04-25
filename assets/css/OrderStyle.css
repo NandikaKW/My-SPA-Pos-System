@@ -1,0 +1,167 @@
+/* Order Management Styles */
+#Order {
+    padding: 20px 0;
+}
+
+/* Card styling */
+#Order .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#Order .card-header {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.gradient-text {
+    background: linear-gradient(45deg, #3498db, #006fff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: bold;
+}
+
+/* Form controls */
+#Order .form-control, #Order .form-select {
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+}
+
+#Order .form-label {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+/* Button container styling */
+#button, #button1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 15px 15px;
+    justify-content: center;
+}
+
+/* Button styling */
+#Order .btn {
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    flex: 1 1 auto;
+    min-width: 100px;
+    margin: 5px 0;
+}
+
+#Order .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+#Order .btn-primary {
+    background-color: rgba(26, 115, 232);
+    border-color: rgba(26, 115, 232);
+}
+
+#Order .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+#Order .btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+}
+
+/* Table styling */
+#item-order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#item-order-table thead th {
+    background-color: #e9ecef;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+
+#item-order-table tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #Order .row {
+        flex-direction: column;
+    }
+
+    #Order .col-md-6 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #button, #button1 {
+        flex-direction: column;
+    }
+
+    #Order .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    #Order .card-header {
+        font-size: 1.1rem;
+    }
+
+    #Order .form-label {
+        font-size: 0.9rem;
+    }
+
+    #item-order-table thead th,
+    #item-order-table tbody td {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+}
+#invoiceDetails>div:first-child{
+    font-weight: bold;
+}
+
+#invoiceDetails>div{
+    margin-left: 25px;
+    font-weight: bold;
+}
+
+#orderDetails>div:first-child{
+    font-weight: bold;
+}
+
+#orderDetails>div{
+    margin-left: 25px;
+    font-weight: bold;
+}
+
+button{
+    margin-left: 10px;
+    width:95px
+}
+
+#button>button:first-child{
+    margin-left: 0;
+}
+
+#button1>button:first-child{
+    margin-left: 0;
+    width:100px
+}
+
+

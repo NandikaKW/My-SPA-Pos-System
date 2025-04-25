@@ -1,0 +1,14 @@
+/* Order Details Table Styles */
+.OrderDetails {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.OrderDetails .topic {
+    font-weight: bold;
+    margin-bottom: 20px;
+    justify-content: center;
+    text-align: center;
+    color: #050505;
+    font-family: "Times New Roman", Times, serif;
+}
