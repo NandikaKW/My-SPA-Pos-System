@@ -1,89 +1,145 @@
-/* Main Section Styling */
-#main-section {
+/* Home Section Styles - Scoped Only to #Home */
+#Home {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     padding: 2rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    margin: 20px auto;
-    max-width: 1200px;
-    border: 1px solid #e2e8f0;
+    min-height: 100vh;
 }
 
-/* Grid Container Styling */
-.grid-container {
+#Home #main-section {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#Home .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    align-items: center;
-    margin-bottom: 2rem;
+    gap: 1.5rem;
+    padding: 1rem;
 }
 
-/* Card Styling */
-.card {
+#Home .card {
     border: none;
     border-radius: 10px;
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
     background: white;
-    position: relative;
-    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
-.card:hover {
+#Home .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
-    border-color: rgba(26, 115, 232);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
-}
-
-/* Card Body Styling */
-.card-body {
+#Home .card-body {
     padding: 1.5rem;
     text-align: center;
 }
 
-.card-title {
-    font-size: 1.1rem;
-    color: #050505;
-    margin-bottom: 0.5rem;
+#Home .card-title {
+    font-size: 1.2rem;
+    color: #343a40;
+    margin-bottom: 1rem;
     font-weight: 600;
-    letter-spacing: 0.5px;
 }
 
-/* Emoji and Number Styling */
-.card-emojis {
+#Home .card-emojis {
     font-size: 2.5rem;
-    font-weight: 700;
-    color: rgba(26, 115, 232);
-    display: inline-block;
-    transition: all 0.3s ease;
+    font-weight: bold;
+    color: #4481eb;
 }
 
-.card:hover .card-emojis {
-    color: rgba(26, 115, 232);
-}
-
-.card-emojis-2 {
+#Home .card-icon {
     font-size: 2rem;
+    color: #6c757d;
     vertical-align: middle;
-    opacity: 0.9;
-    transition: all 0.3s ease;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
-.card:hover .card-emojis-2 {
-    transform: scale(1.15);
+#Home h3 {
+    color: #495057;
+    text-align: center;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
+
+#Home h3 i {
+    color: #4481eb;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    #Home {
+        padding: 1.5rem;
+    }
+
+    #Home .grid-container {
+        gap: 1.2rem;
+    }
+
+    #Home .card-body {
+        padding: 1.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #Home {
+        padding: 1rem;
+    }
+
+    #Home .grid-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    #Home .card-title {
+        font-size: 1.1rem;
+    }
+
+    #Home .card-emojis {
+        font-size: 2rem;
+    }
+
+    #Home .card-icon {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    #Home .grid-container {
+        grid-template-columns: 1fr;
+    }
+
+    #Home .card {
+        width: 100% !important;
+    }
+
+    #Home .card-body {
+        padding: 1rem;
+    }
+
+    #Home h3 {
+        font-size: 1.2rem;
+        margin-top: 1.5rem;
+    }
+}
+
+/* Animation for cards */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#Home .card {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+#Home .card:nth-child(1) { animation-delay: 0.1s; }
+#Home .card:nth-child(2) { animation-delay: 0.2s; }
+#Home .card:nth-child(3) { animation-delay: 0.3s; }
 
 /* Chart Container Styling */
 #chart-div {
@@ -300,6 +356,15 @@ canvas {
 .chart-animate {
     animation: chartFadeIn 0.8s ease forwards;
 }
+.custom-badge {
+    background-color: #007bff; /* Bootstrap blue */
+    color: black;
+    font-size: 1.2rem;
+    padding: 0.5em 0.8em;
+    border-radius: 0.5rem;
+    font-weight: 700; /* Make the count text bold */
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {

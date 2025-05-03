@@ -1,0 +1,298 @@
+/* Order Section with Item Background Style */
+#Order {
+    font-family: 'Times New Roman', Times, serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #4481eb 100%);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* All existing Order styles below remain unchanged */
+#Order .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    background-color: white;
+}
+
+#Order .card:hover {
+    transform: translateY(-5px);
+}
+
+#Order .card-header {
+    background-color: #4481eb;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+
+#Order .gradient-text {
+    background: linear-gradient(to right, #040404, #040404);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#Order .form-label {
+    font-weight: 600;
+    color: #040404;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+#Order .form-control,
+#Order .form-select {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.75rem;
+    background-color: white;
+    color: #040404;
+    transition: all 0.3s ease;
+}
+
+#Order .form-control:focus,
+#Order .form-select:focus {
+    border-color: #4481eb;
+    box-shadow: 0 0 0 0.25rem rgba(68, 129, 235, 0.25);
+}
+
+#Order .form-control:disabled,
+#Order .form-control[readonly] {
+    background-color: #f8f9fa;
+    opacity: 1;
+}
+
+/* Table Styles with improved responsiveness */
+#Order .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    table-layout: auto;
+}
+
+#Order .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+#Order .table-primary {
+    background-color: #4481eb !important;
+    color: white !important;
+}
+
+/* Improved Table Header Responsiveness */
+#Order th {
+    font-weight: 600;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid #4481eb;
+    /* Changed from white-space: nowrap to allow wrapping */
+    white-space: normal;
+    word-break: break-word;
+    min-width: 60px; /* Set minimum width for each header */
+    font-size: clamp(0.8rem, 1.5vw, 1rem); /* Responsive font size */
+}
+
+/* For very small screens, make headers more compact */
+@media (max-width: 576px) {
+    #Order th {
+        padding: 0.5rem 0.3rem;
+        font-size: 0.8rem;
+        min-width: 40px; /* Smaller minimum width on mobile */
+    }
+
+    /* Optionally rotate headers on very small screens */
+    /* #Order th {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        text-align: center;
+        padding: 0.5rem 0.2rem;
+        height: 80px;
+        white-space: nowrap;
+    } */
+}
+
+/* Ensure table cells also wrap content properly */
+#Order td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    word-break: break-word;
+    white-space: normal;
+}
+
+/* Make the table responsive container */
+#Order .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+/* Optional: Add horizontal scroll indicators */
+#Order .table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+#Order .table-responsive::-webkit-scrollbar-thumb {
+    background: #4481eb;
+    border-radius: 4px;
+}
+
+#Order td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    word-break: break-word;
+}
+
+#Order tr:hover {
+    background-color: rgba(68, 129, 235, 0.05);
+}
+
+/* Button Styles with improved responsiveness */
+#Order .btn {
+    padding: 0.6rem 1.25rem;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 0.25rem;
+    white-space: nowrap;
+    text-align: center;
+    display: inline-block;
+}
+
+#Order .btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+#Order .btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+#Order .btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+#Order .btn-warning {
+    background-color: #ffc107;
+    color: #040404;
+}
+
+#Order .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
+}
+
+#Order .btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Button Containers */
+#Order #button,
+#Order #button1 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+/* Button icons */
+#Order .btn i {
+    margin-right: 8px;
+    font-size: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    #Order .table th,
+    #Order .table td {
+        padding: 0.75rem;
+    }
+
+    #Order .btn {
+        padding: 0.6rem 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #Order .card-header {
+        font-size: 1.3rem;
+        padding: 1rem;
+    }
+
+    #Order .table th,
+    #Order .table td {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    #Order .btn {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.9rem;
+        min-width: 90px;
+    }
+
+    #Order #button,
+    #Order #button1 {
+        gap: 0.6rem;
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    #Order .table-responsive {
+        width: 100%;
+        margin-bottom: 1rem;
+        overflow-y: hidden;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        border: 1px solid #ddd;
+    }
+
+    #Order .table {
+        margin-bottom: 0;
+    }
+
+    #Order .table th,
+    #Order .table td {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    #Order .btn {
+        width: 100%;
+        margin: 0.2rem 0;
+        padding: 0.7rem;
+    }
+
+    #Order #button,
+    #Order #button1 {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.8rem 0.5rem;
+    }
+
+    #Order .btn i {
+        margin-right: 6px;
+        font-size: 0.9rem;
+    }
+}

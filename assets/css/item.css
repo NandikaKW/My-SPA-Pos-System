@@ -1,0 +1,164 @@
+/* Style only the Item section */
+#Item {
+    font-family: 'Times New Roman', Times, serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #4481eb 100%);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+#Item .gradient-text h3 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.5rem;
+    background: linear-gradient(to right, #040404, #040404);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#Item .form {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+#Item .form-label {
+    font-weight: 600;
+    color: #040404; /* Changed to black */
+    margin-bottom: 0.5rem;
+}
+
+#Item .form-control {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    background-color: #ffffff; /* Changed to white */
+    color: #040404; /* Changed to black */
+}
+
+#Item .form-control:focus {
+    border-color: #4481eb; /* Changed to your blue */
+    box-shadow: 0 0 0 0.25rem rgba(68, 129, 235, 0.25); /* Changed to your blue */
+    background-color: #ffffff;
+}
+
+#Item .button {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+#Item .btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: white; /* Text color for buttons */
+}
+
+/* Standard button colors */
+#Item .btn-success {
+    background-color: #28a745; /* Green for Submit */
+    border-color: #28a745;
+}
+
+#Item .btn-primary {
+    background-color: #007bff; /* Blue for Update */
+    border-color: #007bff;
+}
+
+#Item .btn-danger {
+    background-color: #dc3545; /* Red for Delete */
+    border-color: #dc3545;
+}
+
+#Item .btn-warning {
+    background-color: #ffc107; /* Yellow for Reset */
+    border-color: #ffc107;
+    color: #040404; /* Black text for better contrast on yellow */
+}
+
+#Item .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    opacity: 0.9;
+}
+
+#Item .table1 {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-top: 2rem;
+}
+
+#Item .table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#Item .table-primary {
+    background: #4481eb; /* Changed to your solid blue */
+    color: white;
+}
+
+#Item th {
+    font-weight: 600;
+    padding: 1rem;
+    text-align: left;
+}
+
+#Item td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+    color: #040404; /* Black text */
+}
+
+#Item tr:hover {
+    background-color: rgba(68, 129, 235, 0.1); /* Light blue hover */
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    #Item .row {
+        flex-direction: column;
+    }
+
+    #Item .col {
+        width: 100%;
+    }
+
+    #Item .button {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #Item {
+        padding: 1rem;
+    }
+
+    #Item .gradient-text h3 {
+        font-size: 2rem;
+    }
+
+    #Item .form, #Item .table1 {
+        padding: 1rem;
+    }
+
+    #Item .button {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    #Item .btn {
+        width: 100%;
+    }
+}
