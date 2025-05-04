@@ -67,8 +67,7 @@
     <div class="card w-75 mb-3">
       <div class="card-body assets-count-div">
         <h5 class="card-title">Total Customers</h5><br>
-        <!-- Customer Count Display -->
-        <span id="customerCount" class="badge custom-badge">0</span>
+        <span id="customerCount" class="custom-badge">0</span>
         <i class="fas fa-user-friends card-icon"></i>
       </div>
     </div>
