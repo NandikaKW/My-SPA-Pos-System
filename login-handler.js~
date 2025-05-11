@@ -1,0 +1,46 @@
+<script>
+    document.querySelector('.sign-in-form').addEventListener('submit', function(e) {
+    e.preventDefault(); // prevent form submission and page reload
+
+    // Get username and password
+    const username = document.querySelector('.sign-in-form input[type="text"]').value;
+    const password = document.querySelector('.sign-in-form input[type="password"]').value;
+
+    // Dummy validation
+    if (username === "admin" && password === "1234") {
+    // Hide login section
+    document.getElementById("login-section").style.display = "none";
+
+    // Show navbar (if it's initially hidden)
+    document.getElementById("navBar").style.display = "block";
+
+    // Optionally redirect or show a specific section
+    window.location.hash = "#Home"; // navigates to Home section
+} else {
+    alert("Invalid credentials. Please try again.");
+}
+});
+</script>
+<script>
+    document.querySelector('.sign-in-form').addEventListener('submit', function(e) {
+    e.preventDefault(); // prevent form submission and page reload
+
+    // Get username and password
+    const username = document.querySelector('.sign-in-form input[type="text"]').value;
+    const password = document.querySelector('.sign-in-form input[type="password"]').value;
+
+    // Dummy validation
+    if (username === "admin" && password === "1234") {
+    // Hide login section
+    document.getElementById("login-section").style.display = "none";
+
+    // Show navbar (if it's initially hidden)
+    document.getElementById("navBar").style.display = "block";
+
+    // Optionally redirect or show a specific section
+    window.location.hash = "#Home"; // navigates to Home section
+} else {
+    alert("Invalid credentials. Please try again.");
+}
+});
+</script>
