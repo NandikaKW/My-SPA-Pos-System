@@ -1,4 +1,3 @@
-
 import { customer_db } from "../db/db.js";
 import { CustomerModel } from "../model/customerModel.js";
 
@@ -15,26 +14,23 @@ const address = $('#address');
 const contact = $('#contact');
 const email = $('#email');
 
-// Search elements
+// Search
 const searchBtn = $('#searchCustomer').next();
 const searchField = $('#searchCustomer');
 
-// Enhanced Validation patterns
+// Regex Patterns
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-// Improved Sri Lankan mobile number regex with better validation
 const mobilePattern = /^(?:\+94|0|94|0094)?(7[0-9])(\d{7})$/;
-// Name pattern to ensure proper names (allowing international characters)
 const namePattern = /^[\p{L}\s.'-]+$/u;
-// Address pattern to ensure minimum address quality
 const addressPattern = /^[\p{L}0-9\s.,'-]{10,}$/u;
 
-// Initialize
+// Init
 $(document).ready(() => {
     customer_id.val(generateCustomerId());
     populateCustomerTable();
 });
 
-// Event Listeners
+// Listeners
 $('#customer_page').on('click', () => {
     resetForm();
     populateCustomerTable();
@@ -45,19 +41,17 @@ searchBtn.on('click', () => searchCustomers());
 
 submit.on('click', (e) => {
     e.preventDefault();
-    addCustomer();
+    addCustomer();  // regex validation happens here
 });
 
-update.on('click', () => updateCustomer());
-
+update.on('click', () => updateCustomer()); // regex validation happens here
 delete_btn.on('click', () => deleteCustomer());
-
 reset.on('click', (e) => {
     e.preventDefault();
     resetForm();
 });
 
-// Functions
+// Helper Functions
 function generateCustomerId() {
     if (customer_db.length === 0) return 'cust-001';
 
@@ -79,78 +73,66 @@ function resetForm() {
     delete_btn.prop("disabled", true);
     update.prop("disabled", true);
 
-    // Clear validation states
     $('.is-invalid').removeClass('is-invalid');
     $('.invalid-feedback').remove();
 }
 
 function validateForm() {
     let isValid = true;
-
-    // Clear previous validation states
     $('.is-invalid').removeClass('is-invalid');
     $('.invalid-feedback').remove();
 
-    // Name validation (required)
     const nameValue = name.val().trim();
+    const addressValue = address.val().trim();
+    const contactValue = contact.val().trim();
+    const emailValue = email.val().trim();
+
     if (!nameValue) {
         showFieldError(name, "Customer name is required");
         isValid = false;
     } else if (!namePattern.test(nameValue)) {
-        showFieldError(name, "Please enter a valid name (only letters, spaces, and basic punctuation)");
+        showFieldError(name, "Invalid name format");
         isValid = false;
     }
 
-    // Address validation (required)
-    const addressValue = address.val().trim();
     if (!addressValue) {
         showFieldError(address, "Address is required");
         isValid = false;
     } else if (!addressPattern.test(addressValue)) {
-        showFieldError(address, "Please enter a valid address (minimum 10 characters)");
+        showFieldError(address, "Address must be at least 10 characters");
         isValid = false;
     }
 
-    // Contact validation (required)
-    const contactValue = contact.val().trim();
     if (!contactValue) {
-        showFieldError(contact, "Contact number is required");
+        showFieldError(contact, "Contact is required");
         isValid = false;
     } else if (!mobilePattern.test(contactValue)) {
-        showFieldError(contact, "Please enter a valid Sri Lankan mobile number (e.g., 07XXXXXXXX, +947XXXXXXXX, 947XXXXXXXX)");
+        showFieldError(contact, "Invalid Sri Lankan mobile number");
         isValid = false;
     }
 
-    // Email validation (optional but must be valid if provided)
-    const emailValue = email.val().trim();
     if (emailValue && !emailPattern.test(emailValue)) {
-        showFieldError(email, "Please enter a valid email address");
+        showFieldError(email, "Invalid email format");
         isValid = false;
     }
 
     return isValid;
 }
+
 function showFieldError(field, message) {
     field.addClass('is-invalid');
     field.after(`<div class="invalid-feedback">${message}</div>`);
 }
 
 function showError(title, message) {
-    Swal.fire({
-        icon: 'error',
-        title: title,
-        text: message
-    });
+    Swal.fire({ icon: 'error', title, text: message });
 }
 
 function showSuccess(message) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: message
-    });
+    Swal.fire({ icon: 'success', title: 'Success', text: message });
 }
 
+// Save
 function addCustomer() {
     if (!validateForm()) return;
 
@@ -169,12 +151,12 @@ function addCustomer() {
     resetForm();
 }
 
-
+// Update
 function updateCustomer() {
     if (!validateForm()) return;
 
-    const customerId = customer_id.val();
-    const index = customer_db.findIndex(c => c.customer_id === customerId);
+    const id = customer_id.val();
+    const index = customer_db.findIndex(c => c.customer_id === id);
 
     if (index === -1) {
         showError("Error", "Customer not found");
@@ -182,7 +164,7 @@ function updateCustomer() {
     }
 
     customer_db[index] = new CustomerModel(
-        customerId,
+        id,
         name.val().trim(),
         address.val().trim(),
         contact.val().trim(),
@@ -194,12 +176,13 @@ function updateCustomer() {
     resetForm();
 }
 
+// Delete
 function deleteCustomer() {
-    const customerId = customer_id.val();
+    const id = customer_id.val();
 
     Swal.fire({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: "This action is permanent!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -207,7 +190,7 @@ function deleteCustomer() {
         confirmButtonText: 'Delete'
     }).then((result) => {
         if (result.isConfirmed) {
-            const index = customer_db.findIndex(c => c.customer_id === customerId);
+            const index = customer_db.findIndex(c => c.customer_id === id);
             if (index !== -1) {
                 customer_db.splice(index, 1);
                 showSuccess("Customer deleted successfully!");
@@ -218,6 +201,7 @@ function deleteCustomer() {
     });
 }
 
+// Search
 function searchCustomers() {
     const searchTerm = searchField.val().toLowerCase();
 
@@ -231,6 +215,7 @@ function searchCustomers() {
 
     renderCustomerTable(results);
 }
+
 function populateCustomerTable() {
     renderCustomerTable(customer_db);
 }
@@ -239,22 +224,22 @@ function renderCustomerTable(customers) {
     const tbody = $('#customerTable tbody');
     tbody.empty();
 
-    customers.forEach(customer => {
+    customers.forEach(c => {
         tbody.append(`
             <tr>
-                <th scope="row">${customer.customer_id}</th>
-                <td>${customer.name}</td>
-                <td>${customer.address}</td>
-                <td>${customer.contact}</td>
-                <td>${customer.email}</td>
+                <th scope="row">${c.customer_id}</th>
+                <td>${c.name}</td>
+                <td>${c.address}</td>
+                <td>${c.contact}</td>
+                <td>${c.email}</td>
             </tr>
         `);
     });
 
-    // Update pagination info
     $('#showingCount').text(customers.length);
 }
 
+// Row click → load to form
 $('#customerTable').on('click', 'tbody tr', function () {
     const cells = $(this).children();
     customer_id.val(cells.eq(0).text());
@@ -266,6 +251,4 @@ $('#customerTable').on('click', 'tbody tr', function () {
     submit.prop("disabled", true);
     delete_btn.prop("disabled", false);
     update.prop("disabled", false);
-
 });
-

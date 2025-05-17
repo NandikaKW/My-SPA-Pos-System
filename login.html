@@ -15,15 +15,15 @@
     <div class="forms-container">
         <div class="signin-signup">
             <!-- Sign In Form -->
-            <form id="loginForm" class="sign-in-form">
+            <form id="loginForm" class="sign-in-form" autocomplete="off">
                 <h2 class="title">Sign in</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="username" placeholder="Username" autocomplete="off" required>
+                    <input type="text" id="username" placeholder="Username" autocomplete="new-username" required>
                 </div>
                 <div class="input-field">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password" placeholder="Password" autocomplete="off" required>
+                    <input type="password" id="password" placeholder="Password" autocomplete="new-password" required>
                 </div>
                 <input type="submit" value="Login" class="btn solid">
                 <p class="social-text">Or Sign in with social platforms</p>
@@ -36,19 +36,19 @@
             </form>
 
             <!-- Sign Up Form -->
-            <form id="signUpForm" class="sign-up-form">
+            <form id="signUpForm" class="sign-up-form" autocomplete="off">
                 <h2 class="title">Sign up</h2>
                 <div class="input-field">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" id="newUsername" placeholder="Username" autocomplete="off" required>
+                    <input type="text" id="newUsername" placeholder="Username" autocomplete="new-username" required>
                 </div>
                 <div class="input-field">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="newEmail" placeholder="Email" autocomplete="off" required>
+                    <input type="email" id="newEmail" placeholder="Email" autocomplete="new-email" required>
                 </div>
                 <div class="input-field">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="newPassword" placeholder="Password" autocomplete="off" required>
+                    <input type="password" id="newPassword" placeholder="Password" autocomplete="new-password" required>
                 </div>
                 <input type="submit" class="btn" value="Sign up">
                 <p class="social-text">Or Sign up with social platforms</p>
@@ -90,6 +90,15 @@
 
 <!-- JavaScript Logic -->
 <script>
+    // Clear all form fields on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('newUsername').value = '';
+        document.getElementById('newEmail').value = '';
+        document.getElementById('newPassword').value = '';
+    });
+
     const signUpBtn = document.getElementById('sign-up-btn');
     const signInBtn = document.getElementById('sign-in-btn');
     const container = document.querySelector('.container');
@@ -137,9 +146,32 @@
         event.preventDefault();
 
         const newUsername = document.getElementById("newUsername").value.trim();
+        const newEmail = document.getElementById("newEmail").value.trim();
         const newPassword = document.getElementById("newPassword").value.trim();
 
+        // Validate inputs
+        if (!newUsername || !newEmail || !newPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please fill in all fields!'
+            });
+            return;
+        }
+
+        // Simple email validation
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Email',
+                text: 'Please enter a valid email address!'
+            });
+            return;
+        }
+
+        // Store user data
         localStorage.setItem("registeredUser", newUsername);
+        localStorage.setItem("registeredEmail", newEmail);
         localStorage.setItem("registeredPass", newPassword);
 
         Swal.fire({
